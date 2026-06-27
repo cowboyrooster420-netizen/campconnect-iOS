@@ -41,9 +41,11 @@ Counselor video  →  Challenge  →  Camper submission  →  Operator review  �
 | Challenge detail: counselor video, instructions, submit | ✅ |
 | Submission flow: photo/video (PhotosPicker) + text, upload to storage | ✅ |
 | Badges grid + camp identity profile | ✅ |
-| **Operator app** (schedule challenges, review queue, award badges) | ⬜ next |
+| Operator console (separate web app, `~/campconnect-admin`) | ✅ |
+| Counselor video upload (operator) + signed-URL playback (camper) | ✅ |
+| Auto-badge engine (DB trigger: points + rule-based badges on approval) | ✅ |
+| **Parental consent + camper invites** (COPPA) | ⬜ next |
 | **Push notifications** (challenge-released nudges) | ⬜ next |
-| **Auto-badge rules** (award on Nth completion, etc.) | ⬜ next |
 
 ---
 
@@ -97,10 +99,15 @@ CampConnect/
 In your Supabase project's **SQL editor**, run in order:
 
 ```
-supabase/schema.sql     # tables, enums, RLS, signup trigger
+supabase/schema.sql     # tables, enums, RLS, signup + auto-badge triggers
 supabase/storage.sql    # storage buckets + policies
-supabase/seed.sql       # demo camp + challenge library + a season
+supabase/seed.sql       # demo camp + challenge library + badges + a season
 ```
+
+> Upgrading a database created **before** the auto-badge feature? Also run
+> `supabase/auto_badges.sql` (idempotent — adds the `criteria` column, backfills
+> the seeded badges, and installs the approval trigger). Fresh setups already
+> include it via `schema.sql`.
 
 Then **disable email confirmation** for quick local testing
 (Authentication → Providers → Email → turn off "Confirm email"), or confirm via

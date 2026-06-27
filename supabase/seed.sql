@@ -63,13 +63,14 @@ insert into challenge_templates (title, summary, category, instructions, counsel
  'photo', 50)
 on conflict do nothing;
 
--- --- Badges ----------------------------------------------------------------
-insert into badges (camp_id, name, description, icon) values
-('00000000-0000-0000-0000-000000000001', 'First Step',     'Completed your first off-season challenge.', 'figure.walk'),
-('00000000-0000-0000-0000-000000000001', 'Trailblazer',    'Completed 3 outdoor challenges.',            'mountain.2.fill'),
-('00000000-0000-0000-0000-000000000001', 'Camp Spirit',    'Completed a tradition challenge.',           'flame.fill'),
-('00000000-0000-0000-0000-000000000001', 'Storyteller',    'Completed a reflection challenge.',          'book.fill'),
-('00000000-0000-0000-0000-000000000001', 'Year-Rounder',   'Stayed active every month of the off-season.', 'crown.fill')
+-- --- Badges (with auto-award rules in `criteria`) --------------------------
+-- Year-Rounder has no criteria (manual award — monthly-activity rule is future work).
+insert into badges (camp_id, name, description, icon, criteria) values
+('00000000-0000-0000-0000-000000000001', 'First Step',   'Completed your first off-season challenge.',   'figure.walk',     '{"type":"first_approval"}'),
+('00000000-0000-0000-0000-000000000001', 'Trailblazer',  'Completed 3 outdoor challenges.',               'mountain.2.fill', '{"type":"category_count","category":"outdoor","count":3}'),
+('00000000-0000-0000-0000-000000000001', 'Camp Spirit',  'Completed a tradition challenge.',              'flame.fill',      '{"type":"category_count","category":"tradition","count":1}'),
+('00000000-0000-0000-0000-000000000001', 'Storyteller',  'Completed a reflection challenge.',             'book.fill',       '{"type":"category_count","category":"reflection","count":1}'),
+('00000000-0000-0000-0000-000000000001', 'Year-Rounder', 'Stayed active every month of the off-season.',  'crown.fill',      null)
 on conflict do nothing;
 
 -- --- A sequenced season (challenges released over the off-season) -----------
