@@ -42,10 +42,17 @@ on storage.objects for select
 to authenticated
 using (bucket_id = 'counselor-videos');
 
--- Only operators upload counselor videos.
+-- Only operators upload/replace/remove counselor videos.
+-- `for all` (not just insert) so re-uploading a video (upsert) and clearing it work.
+-- Drop-if-exists so this file is safe to re-run after the original insert-only policy.
+drop policy if exists "counselor videos operator write" on storage.objects;
 create policy "counselor videos operator write"
-on storage.objects for insert
+on storage.objects for all
 to authenticated
+using (
+  bucket_id = 'counselor-videos'
+  and exists (select 1 from profiles where id = auth.uid() and role = 'operator')
+)
 with check (
   bucket_id = 'counselor-videos'
   and exists (select 1 from profiles where id = auth.uid() and role = 'operator')

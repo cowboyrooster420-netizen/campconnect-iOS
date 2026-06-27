@@ -37,14 +37,28 @@ struct CampService {
     // MARK: - Challenges
 
     /// Active (released) challenges for the camper's camp, in the camp's sequence.
+    /// Resolves any stored counselor-video storage path into a short-lived signed
+    /// URL so it plays in the detail view. Values that are already full URLs
+    /// (e.g. a pasted YouTube link) are passed through untouched.
     func fetchActiveChallenges() async throws -> [SeasonChallenge] {
-        try await db
+        var challenges: [SeasonChallenge] = try await db
             .from("season_challenges")
             .select("*, template:challenge_templates(*)")
             .eq("status", value: SeasonChallengeStatus.active.rawValue)
             .order("sequence_order", ascending: true)
             .execute()
             .value
+
+        for index in challenges.indices {
+            guard let value = challenges[index].counselorVideoURL,
+                  !value.hasPrefix("http") else { continue }
+            if let signed = try? await storage
+                .from("counselor-videos")
+                .createSignedURL(path: value, expiresIn: 60 * 60) {
+                challenges[index].counselorVideoURL = signed.absoluteString
+            }
+        }
+        return challenges
     }
 
     // MARK: - Submissions

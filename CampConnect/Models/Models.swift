@@ -115,7 +115,9 @@ struct SeasonChallenge: Codable, Identifiable, Hashable, Sendable {
     let campID: UUID
     let templateID: UUID
     let sequenceOrder: Int
-    let counselorVideoURL: String?
+    // Stored value is either a full external URL (http…) or a storage path in the
+    // `counselor-videos` bucket. CampService resolves bare paths into signed URLs.
+    var counselorVideoURL: String?
     let releaseAt: Date?
     let dueAt: Date?
     let status: SeasonChallengeStatus
