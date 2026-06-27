@@ -52,6 +52,7 @@ create table if not exists camps (
   logo_url    text,
   primary_color text default '#2E7D5B',
   season_year int not null default extract(year from now()),
+  session_start_date date,                              -- next session start (countdown)
   created_at  timestamptz not null default now()
 );
 
@@ -449,8 +450,8 @@ using (bucket_id = 'avatars');
 -- "promote to operator" snippet at the bottom if you want operator screens.
 
 -- --- Demo camp -------------------------------------------------------------
-insert into camps (id, name, slug, primary_color, season_year)
-values ('00000000-0000-0000-0000-000000000001', 'Camp Birchwood', 'birchwood', '#2E7D5B', 2026)
+insert into camps (id, name, slug, primary_color, season_year, session_start_date)
+values ('00000000-0000-0000-0000-000000000001', 'Camp Birchwood', 'birchwood', '#2E7D5B', 2026, '2027-06-21')
 on conflict (id) do nothing;
 
 -- --- Challenge templates (library slice) -----------------------------------

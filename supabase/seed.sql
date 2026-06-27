@@ -7,8 +7,8 @@
 -- "promote to operator" snippet at the bottom if you want operator screens.
 
 -- --- Demo camp -------------------------------------------------------------
-insert into camps (id, name, slug, primary_color, season_year)
-values ('00000000-0000-0000-0000-000000000001', 'Camp Birchwood', 'birchwood', '#2E7D5B', 2026)
+insert into camps (id, name, slug, primary_color, season_year, session_start_date)
+values ('00000000-0000-0000-0000-000000000001', 'Camp Birchwood', 'birchwood', '#2E7D5B', 2026, '2027-06-21')
 on conflict (id) do nothing;
 
 -- --- Challenge templates (library slice) -----------------------------------

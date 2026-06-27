@@ -50,6 +50,7 @@ create table if not exists camps (
   logo_url    text,
   primary_color text default '#2E7D5B',
   season_year int not null default extract(year from now()),
+  session_start_date date,                              -- next session start (countdown)
   created_at  timestamptz not null default now()
 );
 
