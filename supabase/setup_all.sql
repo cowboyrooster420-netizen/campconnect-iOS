@@ -571,6 +571,7 @@ create table if not exists feed_items (
   -- storage path in 'counselor-videos' bucket OR external URL; null = text-only
   media_path  text,
   media_type  text,        -- 'photo' | 'video' (null for text-only)
+  release_offset_days int,  -- nudges only: days after challenge release to drop
   -- challenge/wrap_up items link back to a challenge (tap → challenge screen)
   season_challenge_id uuid references season_challenges(id) on delete cascade,
   -- scheduling: campers see items once publish_at has passed
