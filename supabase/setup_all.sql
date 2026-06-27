@@ -1,5 +1,5 @@
--- CampConnect — full setup (schema -> storage -> seed -> feed). Run once on a fresh DB.
--- ============================================================ SCHEMA
+-- Campfire — full setup (schema -> storage -> seed -> feed). Run once on a fresh DB.
+-- === SCHEMA
 -- CampConnect — Year-Round Engagement Platform
 -- Supabase schema (Postgres + RLS)
 --
@@ -360,7 +360,7 @@ create trigger guard_profile_escalation
   before update on profiles
   for each row execute function prevent_profile_escalation();
 
--- ============================================================ STORAGE
+-- === STORAGE
 -- CampConnect — Storage buckets + policies
 -- Run in the Supabase SQL editor after schema.sql.
 --
@@ -439,7 +439,7 @@ create policy "avatars camp read"
 on storage.objects for select to authenticated
 using (bucket_id = 'avatars');
 
--- ============================================================ SEED
+-- === SEED
 -- CampConnect — seed data for local development / demo
 -- Run AFTER schema.sql. Creates one demo camp, a handful of challenge templates
 -- (a slice of the eventual ~100-item library), badges, and a sequenced season.
@@ -548,7 +548,7 @@ on conflict do nothing;
 --   set role = 'operator', camp_id = '00000000-0000-0000-0000-000000000001'
 --   where id = (select id from auth.users where email = 'you@example.com');
 
--- ============================================================ FEED
+-- === FEED
 -- CampConnect — Feed v1 migration
 -- A one-way, operator-curated camp content feed (a "camp channel"): counselor
 -- challenge videos, challenge wrap-ups, scheduled "camp memories", and
@@ -559,7 +559,7 @@ on conflict do nothing;
 -- Types + tables
 -- ---------------------------------------------------------------------------
 do $$ begin
-  create type feed_item_type as enum ('challenge', 'wrap_up', 'memory', 'announcement');
+  create type feed_item_type as enum ('challenge', 'wrap_up', 'nudge', 'memory', 'announcement');
 exception when duplicate_object then null; end $$;
 
 create table if not exists feed_items (
@@ -570,6 +570,7 @@ create table if not exists feed_items (
   caption     text,
   -- storage path in 'counselor-videos' bucket OR external URL; null = text-only
   media_path  text,
+  media_type  text,        -- 'photo' | 'video' (null for text-only)
   -- challenge/wrap_up items link back to a challenge (tap → challenge screen)
   season_challenge_id uuid references season_challenges(id) on delete cascade,
   -- scheduling: campers see items once publish_at has passed
@@ -579,10 +580,11 @@ create table if not exists feed_items (
 );
 
 create index if not exists feed_items_camp_idx on feed_items(camp_id, publish_at desc);
--- one shadow feed entry per challenge per kind (so re-setting a video upserts)
+-- one shadow feed entry per challenge for intro + wrap-up (so re-setting upserts);
+-- nudges are NOT constrained — a challenge can have many.
 create unique index if not exists feed_items_challenge_kind
   on feed_items(season_challenge_id, type)
-  where season_challenge_id is not null;
+  where season_challenge_id is not null and type in ('challenge', 'wrap_up');
 
 -- Wrap-up video on the challenge itself (mirrors counselor_video_url).
 alter table season_challenges add column if not exists recap_video_url text;
