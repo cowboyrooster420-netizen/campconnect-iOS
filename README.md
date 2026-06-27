@@ -1,6 +1,6 @@
-# CampConnect (iOS)
+# Campfire (iOS — legacy)
 
-A year-round engagement platform for summer camps. CampConnect turns the summer
+A year-round engagement platform for summer camps. Campfire turns the summer
 experience into a structured, off-season loop that keeps campers emotionally
 connected to their camp identity — driving re-enrollment and referrals.
 

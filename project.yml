@@ -28,16 +28,16 @@ targets:
     info:
       path: CampConnect/Resources/Info.plist
       properties:
-        CFBundleDisplayName: CampConnect
+        CFBundleDisplayName: Campfire
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         # Media capture for challenge submissions
-        NSCameraUsageDescription: "CampConnect uses the camera so campers can record challenge submissions."
-        NSPhotoLibraryUsageDescription: "CampConnect lets campers choose photos and videos for challenge submissions."
-        NSMicrophoneUsageDescription: "CampConnect uses the microphone to record video submissions."
+        NSCameraUsageDescription: "Campfire uses the camera so campers can record challenge submissions."
+        NSPhotoLibraryUsageDescription: "Campfire lets campers choose photos and videos for challenge submissions."
+        NSMicrophoneUsageDescription: "Campfire uses the microphone to record video submissions."
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.campconnect.app

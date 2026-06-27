@@ -68,7 +68,7 @@ struct AuthView: View {
             Image(systemName: "tent.fill")
                 .font(.system(size: 52))
                 .foregroundStyle(Theme.accent)
-            Text("CampConnect")
+            Text("Campfire")
                 .font(.largeTitle.bold())
                 .foregroundStyle(Theme.ink)
             Text("Your camp, all year long.")

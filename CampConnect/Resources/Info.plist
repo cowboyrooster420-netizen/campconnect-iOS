@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>CampConnect</string>
+	<string>Campfire</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -21,11 +21,11 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSCameraUsageDescription</key>
-	<string>CampConnect uses the camera so campers can record challenge submissions.</string>
+	<string>Campfire uses the camera so campers can record challenge submissions.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>CampConnect uses the microphone to record video submissions.</string>
+	<string>Campfire uses the microphone to record video submissions.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>CampConnect lets campers choose photos and videos for challenge submissions.</string>
+	<string>Campfire lets campers choose photos and videos for challenge submissions.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>
