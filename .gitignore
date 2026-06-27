@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Xcode / build
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+xcuserdata/
+
+# XcodeGen output (regenerate with `xcodegen generate`)
+CampConnect.xcodeproj/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Package.resolved
+
+# Secrets — never commit real keys
+CampConnect/Resources/Secrets.plist
+.env
