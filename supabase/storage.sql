@@ -13,6 +13,11 @@ insert into storage.buckets (id, name, public)
 values ('counselor-videos', 'counselor-videos', false)
 on conflict (id) do nothing;
 
+-- avatars : camper profile photos (private; camper writes own folder, camp can read)
+insert into storage.buckets (id, name, public)
+values ('avatars', 'avatars', false)
+on conflict (id) do nothing;
+
 -- Campers may upload/read only files under their own user-id folder.
 -- Paths are "<auth.uid>/<challenge-id>.<ext>".
 create policy "submissions camper rw"
@@ -57,3 +62,16 @@ with check (
   bucket_id = 'counselor-videos'
   and exists (select 1 from profiles where id = auth.uid() and role = 'operator')
 );
+
+-- Avatars: camper reads/writes only files under their own user-id folder.
+drop policy if exists "avatars owner rw" on storage.objects;
+create policy "avatars owner rw"
+on storage.objects for all to authenticated
+using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text)
+with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+
+-- Any authenticated camp member can read avatars.
+drop policy if exists "avatars camp read" on storage.objects;
+create policy "avatars camp read"
+on storage.objects for select to authenticated
+using (bucket_id = 'avatars');

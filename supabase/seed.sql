@@ -73,6 +73,21 @@ insert into badges (camp_id, name, description, icon, criteria) values
 ('00000000-0000-0000-0000-000000000001', 'Year-Rounder', 'Stayed active every month of the off-season.',  'crown.fill',      null)
 on conflict do nothing;
 
+-- One badge per challenge (global; awarded when that challenge is approved).
+insert into badges (camp_id, name, description, icon, criteria)
+select null, t.title, 'Completed the ' || t.title || ' challenge.',
+  case t.category when 'outdoor' then 'leaf' when 'creative' then 'color-palette'
+                  when 'reflection' then 'book' when 'tradition' then 'flame' end,
+  jsonb_build_object('type', 'challenge', 'template_id', t.id)
+from challenge_templates t
+where not exists (select 1 from badges b
+  where b.criteria->>'type' = 'challenge' and (b.criteria->>'template_id')::uuid = t.id);
+
+-- Signup badge (global).
+insert into badges (camp_id, name, description, icon, criteria)
+select null, 'Welcome to Camp!', 'Joined and started your year-round journey.', 'happy', '{"type":"signup"}'::jsonb
+where not exists (select 1 from badges where criteria->>'type' = 'signup');
+
 -- --- A sequenced season (challenges released over the off-season) -----------
 -- Pull the first 6 templates and schedule them month-by-month.
 insert into season_challenges (camp_id, template_id, sequence_order, release_at, due_at, status)
