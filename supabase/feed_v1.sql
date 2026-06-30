@@ -21,6 +21,9 @@ create table if not exists feed_items (
   media_path  text,
   media_type  text,        -- 'photo' | 'video' (null for text-only)
   release_offset_days int,  -- nudges only: days after challenge release to drop
+  badge_label  text,        -- announcements: free-text pill, e.g. "JUST POSTED"
+  action_label text,        -- announcements: CTA button text
+  action_url   text,        -- announcements: CTA link (opens externally)
   -- challenge/wrap_up items link back to a challenge (tap → challenge screen)
   season_challenge_id uuid references season_challenges(id) on delete cascade,
   -- scheduling: campers see items once publish_at has passed
