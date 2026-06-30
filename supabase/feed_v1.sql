@@ -24,6 +24,7 @@ create table if not exists feed_items (
   badge_label  text,        -- announcements: free-text pill, e.g. "JUST POSTED"
   action_label text,        -- announcements: CTA button text
   action_url   text,        -- announcements: CTA link (opens externally)
+  scene        text,        -- announcements w/o photo: 'sunrise'|'lake'|'dusk' (null=auto)
   -- challenge/wrap_up items link back to a challenge (tap → challenge screen)
   season_challenge_id uuid references season_challenges(id) on delete cascade,
   -- scheduling: campers see items once publish_at has passed
